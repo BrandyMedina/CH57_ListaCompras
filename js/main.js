@@ -5,7 +5,11 @@ const btnClear = document.getElementById("btnClear");
 
 const alertValidaciones = document.getElementById("alertValidaciones");
 const alertValidacionesTexto = document.getElementById("alertValidacionesTexto");
+const tablaListaCompras = document.getElementById("tablaListaCompras");
+const tablaProd = tablaListaCompras.getElementsByTagName("tbody").item(0);
 
+
+let cont = 0;
 // Validar contidad
 function validarCantidad(){
     if(txtNumber.value.length == 0){
@@ -30,6 +34,7 @@ function getprecio(){
 
 btnAgregar.addEventListener("click", function(event){
     event.preventDefault();
+    let isValid = true;
 
     // Limpia la alerta
     alertValidacionesTexto.innerHTML = "";
@@ -46,7 +51,7 @@ btnAgregar.addEventListener("click", function(event){
         txtName.style.border = "medium red solid";
         alertValidacionesTexto.innerHTML = "<strong> El nombre del producto no es correcto <strong><br/>";
         alertValidaciones.style.display = "block";
-        
+        isValid = false;
     }
 
     if (!validarCantidad()){
@@ -54,8 +59,29 @@ btnAgregar.addEventListener("click", function(event){
         txtNumber.style.border ="medium red solid";
         alertValidacionesTexto.innerHTML += "<strong> La cantidad no es Correcta <strong>";
         alertValidaciones.style.display = "block";
+        isValid = false;
     }
+
+    if (isValid){
+        cont++;
+        let precio = getprecio();
+        let row=`<tr>
+                    <td>${cont}</td>
+                    <td>${txtName.value}</td>
+                    <td>${txtNumber.value}</td>
+                    <td>${precio}</td>
+                </tr>`;
+
+        tablaProd.insertAdjacentHTML("beforeend",row);
+        // Limpia los campos 
+        txtName.value = "";
+        txtNumber.value = "";
+        // se queda activado el campo de nombre para anotar el sig, producto
+        txtName.focus();
+
+    } //isValid
 });
+
 
 // btnClear.addEventListener("click",function(event){
 //     event.preventDefault();

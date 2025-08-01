@@ -17,6 +17,8 @@ let cont = 0;
 let totalEnProductos = 0;
 let costoTotal = 0;
 
+let datos = new Array(); // [];
+
 // Validar contidad
 function validarCantidad(){
     if(txtNumber.value.length == 0){
@@ -79,6 +81,17 @@ btnAgregar.addEventListener("click", function(event){
                     <td>${precio}</td>
                 </tr>`;
 
+        let elemento = {
+            "Cont" : cont,
+            "Nombre": txtName.value,
+            "Cantidad": txtNumber.value,
+            "Precio" : precio
+        };
+
+        datos.push(elemento);
+        localStorage.setItem("datos", JSON.stringify(datos));
+
+
         tablaProd.insertAdjacentHTML("beforeend",row);
 
         contadorProductos.innerText = cont;
@@ -88,8 +101,17 @@ btnAgregar.addEventListener("click", function(event){
         
         costoTotal += precio * Number(txtNumber.value);
 
-        precioTotal.innerText =new Intl.NumberFormat("es-MX", 
+        precioTotal.innerText = new Intl.NumberFormat("es-MX", 
                     { style: "currency", currency: "MXN" }).format(costoTotal);
+
+        let resumen = {
+                "cont" : cont,
+                "totalEnProductos": totalEnProductos,
+                "costoTotal": costoTotal
+        };
+
+        localStorage.setItem("resumen", JSON.stringify(resumen));
+
 
 
         // Limpia los campos 
